@@ -1,4 +1,5 @@
 class PlantsController < ApplicationController
+  # before_action :find_plant, except: [:index, :]
 
   # GET /plants
   def index
@@ -18,9 +19,27 @@ class PlantsController < ApplicationController
     render json: plant, status: :created
   end
 
+  # PUT/PATCH /plants/:id
+  def update
+    plant = Plant.find_by(id: params[:id])
+    plant.update(plant_params)
+    render json: plant, status: :ok
+  end  
+
+  # DELETE /plants/:id
+  def destroy
+    plant = Plant.find_by(id: params[:id])
+    plant.destroy
+    render json: {message: "Plant deleted"}, status: :ok
+  end
+
   private
 
   def plant_params
     params.permit(:name, :image, :price, :is_in_stock)
   end
+
+  # def find_plant
+  #   @plant = Plant.find_by(id: params[:id])
+  # end
 end
